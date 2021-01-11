@@ -1,11 +1,14 @@
 import EquationSolver
 import InputValidator
+import InputFormatter
 
 
 def main():
-    list = InputValidator.string_to_list("(23.5 + 55) & (75 - (3 * 6))")
+    #list = InputValidator.string_to_list("5$-6!")
+    list = InputFormatter.string_to_list(
+       "2&-5!")
     print(list)
-    result = EquationSolver.solve_equation(list)
+    result = EquationSolver.calculate(list)
     print(result)
 
 
