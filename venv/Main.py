@@ -4,9 +4,9 @@ import InputFormatter
 
 
 def main():
-    #list = InputValidator.string_to_list("5$-6!")
     list = InputFormatter.string_to_list(
-       "2&-5!")
+       "(-(700%64)!~)")
+    InputFormatter.fix_minuses(list)
     print(list)
     result = EquationSolver.calculate(list)
     print(result)

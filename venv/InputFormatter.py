@@ -42,8 +42,6 @@ def string_to_list(str):
                 else:
                     break
 
-    fix_minuses(op_list)
-
     return op_list
 
 
@@ -57,35 +55,41 @@ def fix_minuses(list):
 
     # Check adjacent minuses
     i = 0
-    while i < len(list):
-        if list[i] == '-':
+    while i < len(list): # Go over the equation.
+        if list[i] == '-': # If found a minus
             start_index = i
-            while i < len(list):
+            while i < len(list): # Find the index of the last minus in a row.
                 if list[i] == '-':
                     i = i + 1
                 else:
                     break
 
-            minus_count = i - start_index
-            if minus_count % 2 == 0:
-                for j in range(minus_count - 1):
+            minus_count = i - start_index # Number of minuses in a row.
+            if minus_count % 2 == 0: # If the number is even
+                # (should be positive).
+                for j in range(minus_count - 1): # Pop all the minuses except
+                    # the last one.
                     list.pop(start_index)
-                if (list[start_index-1] == ')' or \
-                        isinstance(list[start_index-1], float)) and \
-                        start_index != 0:
-                    list[start_index] = '+'
+                if list[start_index-1] == ')' or \
+                        isinstance(list[start_index-1], float): # If the minus
+                    # is right next to a closing parentheses or a number
+                    list[start_index] = '+' # Change the minus to plus.
                 else:
                     list.pop(start_index)
-                i = start_index - 1
-            elif minus_count % 2 == 1 and list[start_index - 1] == '+':
-                for j in range(minus_count):
-                    list.pop(start_index)
-                list[start_index - 1] = '-'
-                i = start_index - 1
-            elif minus_count % 2 == 1 and list[start_index - 1] != '+':
-                for j in range(minus_count - 1):
-                    list.pop(start_index)
-                i = start_index
+                i = start_index - 1 # Offset i to make it where it was before
+                # the popping.
+            elif minus_count % 2 == 1: # Number of minuses if odd.
+                if list[start_index - 1] == '+': # If there is a plus before.
+                    for j in range(minus_count): # Pop all the minuses.
+                        list.pop(start_index)
+                    list[start_index - 1] = '-' # Set minus instead of plus.
+                    i = start_index - 1 # Offset i to make it where it was
+                    # before the popping.
+                else:
+                    for j in range(minus_count - 1): # Pop all the minuses
+                        # except the last one.
+                        list.pop(start_index)
+                    i = start_index # Offset i to make it where it was
+                    # before the popping.
 
         i = i + 1
-

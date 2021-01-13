@@ -19,7 +19,9 @@ operator_dic = {
     '!': 6
 }
 
+# Operators with two operands.
 two_operands = {'+', '*', '/', '-', '^', '%', '@', '$', '&'}
+# Operators with one operand.
 one_operand = {'!', '~'}
 
 def calculate(equation):
@@ -56,7 +58,7 @@ def calculate(equation):
                     # if found closing parentheses.
                     count = count - 1
 
-            result = solve_equation(equation[start_index: i]) # Run this
+            result = calculate(equation[start_index: i]) # Run this
             # function for the equation found in the parentheses.
             for j in range(i - start_index + 1): # Pop all the elements
                 # of the equation we solved (until the closing parentheses).
