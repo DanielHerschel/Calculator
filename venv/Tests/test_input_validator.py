@@ -56,3 +56,24 @@ def test_check_legal_chars():
     # Assert
     assert result_of_valid_test == True
     assert result_of_invalid_test == False
+
+
+def test_check_numbers():
+    """
+    Test the check_numbers() function.
+    """
+
+    # Setup
+    valid_str = "(5+-6!)+-5"
+    invalid_decimal_str = "(5.+-6!)+-5"
+    invalid_two_decimal_str = "(5+-6.7.7!)+-5"
+
+    # Test
+    result_of_valid_test = check_numbers(valid_str)
+    result_of_invalid_decimal_test = check_numbers(invalid_decimal_str)
+    result_of_invalid_two_decimal_test = check_numbers(invalid_two_decimal_str)
+
+    # Assert
+    assert result_of_valid_test == True
+    assert result_of_invalid_decimal_test == False
+    assert result_of_invalid_two_decimal_test == False

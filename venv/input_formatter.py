@@ -11,7 +11,8 @@ def delete_whitespaces(str):
     :return: None
     Deletes all the whitespaces in the string.
     """
-    str.replace(' ', '').replace('\t', '').replace('\n', '')
+    str = str.replace(' ', '').replace('\t', '').replace('\n', '')
+    return str
 
 
 def string_to_list(str):
@@ -20,6 +21,7 @@ def string_to_list(str):
     :return: a list of the operators and operands.
     Turns the string into a list of operators and operands.
     """
+    global legal_operators, legal_operands
 
     op_list = []
     i = 0
@@ -74,9 +76,11 @@ def fix_minuses(list):
                 for j in range(minus_count - 1): # Pop all the minuses except
                     # the last one.
                     list.pop(start_index)
-                if list[start_index-1] == ')' or \
-                        isinstance(list[start_index-1], float): # If the minus
+                if (list[start_index-1] == ')' or \
+                        isinstance(list[start_index-1], float)) and \
+                        start_index > 0: # If the minus
                     # is right next to a closing parentheses or a number
+                    # and if it's not at the start of the equation.
                     list[start_index] = '+' # Change the minus to plus.
                 else:
                     list.pop(start_index)

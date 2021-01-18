@@ -41,35 +41,41 @@ def calculate(equation):
     solve_equation(7 - 5)
     """
 
-    i = 0
-    while i < len(equation): # Find all the parentheses
+    parentheses_iterator = 0
+    while parentheses_iterator < len(equation): # Find all the parentheses.
 
-        if equation[i] == '(': # If found an open parentheses
-            start_index = i + 1 # Index of the first parentheses
+        if equation[parentheses_iterator] == '(': # If found an open
+            # parentheses.
+            start_index = parentheses_iterator + 1 # Index of the first
+            # parentheses.
             count = 1 # Count checks if the closing parentheses
             # is closing the current open parentheses.
             while count != 0: # Find the closing parentheses
                 # of the open parentheses.
-                i = i + 1
-                if equation[i] == '(': # Increase count by 1
+                parentheses_iterator = parentheses_iterator + 1
+                if equation[parentheses_iterator] == '(': # Increase count by 1
                     # if found open parentheses.
                     count = count + 1
-                elif equation[i] == ')': # Decrease count by 1
-                    # if found closing parentheses.
+                elif equation[parentheses_iterator] == ')': # Decrease count by
+                    # 1 if found closing parentheses.
                     count = count - 1
 
-            result = calculate(equation[start_index: i]) # Run this
-            # function for the equation found in the parentheses.
-            for j in range(i - start_index + 1): # Pop all the elements
-                # of the equation we solved (until the closing parentheses).
+            # Run this function for the equation found in the parentheses.
+            result = calculate(equation[start_index: parentheses_iterator])
+
+            # Pop all the elements of the equation we solved
+            # (until the closing parentheses).
+            for j in range(parentheses_iterator - start_index + 1):
                 equation.pop(start_index)
             equation[start_index - 1] = result # Replace the element that's
             # before start_index with the result (will always be
             # the opening parentheses).
-            i = -1 # Assign -1 to i to start over the search for parentheses
-            # (I assign -1 because i do i = i + 1 right after that).
+            parentheses_iterator = -1 # Assign -1 to i to start over the search
+            # for parentheses (I assign -1 because I add 1 to the iterator
+            # right after that).
 
-        i = i + 1 # Skip all the elements that are not open parentheses.
+        parentheses_iterator = parentheses_iterator + 1 # Skip all the elements
+        # that are not open parentheses.
 
     return solve_simple_equation(equation) # If not found any parentheses
     # in the equation, run solve_simple_equation.
@@ -92,24 +98,28 @@ def solve_simple_equation(equation):
     max_level_operator = '' # Operator with max level in the equation.
     max_level_operator_index = 0 # Index of the max level operator.
 
-    for i in range(len(equation)): # Go over the equation.
-        if isinstance(equation[i], str): # If it's a string
+    for equation_iterator in range(len(equation)): # Go over the equation.
+        if isinstance(equation[equation_iterator], str): # If it's a string
             if max_level_operator == '': # Check if not found an operator yet.
-                max_level_operator = equation[i] # Assign the operator.
-                max_level_operator_index = i # Assign the index of
-                # the operator.
-            elif operator_dic[equation[i]] > operator_dic[max_level_operator]:
+                # Assign the operator.
+                max_level_operator = equation[equation_iterator]
+                # Assign the index of the operator.
+                max_level_operator_index = equation_iterator
+            elif operator_dic[equation[equation_iterator]] > \
+                    operator_dic[max_level_operator]:
                 # If found an operator already, check if the current one has
                 # a higher level.
-                max_level_operator = equation[i]  # Assign the operator.
-                max_level_operator_index = i  # Assign the index of
+
+                # Assign the max level operator.
+                max_level_operator = equation[equation_iterator]
+                # Assign the index of max level operator.
+                max_level_operator_index = equation_iterator
 
     operator = max_level_operator # Just to make it easier to write.
     index = max_level_operator_index # Just to make it easier to write.
 
     # Handle operators that should be with two operands.
     if operator in two_operands:
-
         # Handle minuses
         if operator == '-' and index == 0 and len(equation) == 2:
             # If the operator is minus, it's at the start of the equation
@@ -177,7 +187,7 @@ def solve_two_operand(equation):
     elif operator == '&':
         return min(operand1, operand2)
 
-    return  0 # Just for emergency.
+    return 0 # Just for emergency.
 
 
 def solve_one_operand(equation):
@@ -204,9 +214,9 @@ def factorial(x):
     :param x: int
     :return: factorial of x.
     """
-    result = 1
+    factorial_result = 1
     while x > 0:
-        result *= x
-        x = x -1
+        factorial_result *= x
+        x = x - 1
 
-    return result
+    return factorial_result

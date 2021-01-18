@@ -13,7 +13,25 @@ def validate_string(str):
     :return: True if string is valid, False if not.
     Prints out a message if found an error in the string.
     """
-    pass
+
+    if not check_legal_chars(str):
+        print("Illegal characters are used.")
+        return False
+    elif check_parentheses(str) > 0:
+        print("There are too many opening parentheses.")
+        return False
+    elif check_parentheses(str) < 0:
+        print("There are too many closing parentheses.")
+        return False
+    elif not check_unnecessary_parentheses(str):
+        print("There are unnecessary parentheses.")
+        return False
+    elif not check_numbers(str):
+        return False
+    elif not check_operators(str):
+        return False
+
+    return True
 
 
 def check_legal_chars(str):
@@ -39,14 +57,14 @@ def check_parentheses(str):
     there are as many opening parentheses as closing ones.
     """
 
-    count = 0
+    parentheses_count = 0
     for i in str: # Go over the string.
         if i == '(':
-            count = count + 1
+            parentheses_count = parentheses_count + 1
         elif i == ')':
-            count = count - 1
+            parentheses_count = parentheses_count - 1
 
-    return count
+    return parentheses_count
 
 
 def check_unnecessary_parentheses(str):
@@ -56,7 +74,9 @@ def check_unnecessary_parentheses(str):
     are.
     """
 
-    pass
+    # TODO: implement this method.
+
+    return True
 
 
 def check_operators(str):
@@ -103,8 +123,36 @@ def check_operators(str):
 def check_numbers(str):
     """
     :param str: string
-    :return: True if the numbers don't have two decimal points and False if
-    they do.
+    :return: True if the numbers don't have two decimal points or if the
+    decimal points are used correctly and False otherwise.
     """
 
-    pass
+    i = 0
+    while i < len(str):
+        if str[i] in legal_operands: # Start of a number.
+            start_index = i # Start index of the number.
+            decimal_flag = False # Flag if found a decimal point in a number.
+            while i < len(str): # Find the end index of the number.
+                if str[i].isdigit(): # Skip on the digits.
+                    i = i + 1
+                elif str[i] == '.': # If found a decimal point.
+                    if not decimal_flag: # If not found one already.
+                        decimal_flag = True
+                    else: # If found one in this number already.
+                        print("There are two decimal points for one number.")
+                        return False
+
+                    if not str[i - 1].isdigit() or not str[i + 1].isdigit():
+                        # If the decimal point doen't have a digit before or
+                        # after it.
+                        print("Decimal point not used correctly. "
+                              "Missing digits.")
+                        return False
+
+                    i = i + 1
+                else: # End of number
+                    break
+
+        i = i + 1
+
+    return True
