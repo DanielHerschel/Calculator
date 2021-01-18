@@ -21,8 +21,10 @@ operator_dic = {
 
 # Operators with two operands.
 two_operands = {'+', '*', '/', '-', '^', '%', '@', '$', '&'}
-# Operators with one operand.
-one_operand = {'!', '~'}
+# Operators with one operand that come after an operand.
+one_operand_after = {'!'}
+# Operators with one operand that come before an operand.
+one_operand_before = {'~'}
 
 def calculate(equation):
     """
@@ -94,7 +96,7 @@ def solve_simple_equation(equation):
     if len(equation) == 1: # Stop condition. When there is only 1 operand left.
         return equation[0]
 
-    global operator_dic, two_operands, one_operand
+    global operator_dic, two_operands, one_operand_before, one_operand_after
     max_level_operator = '' # Operator with max level in the equation.
     max_level_operator_index = 0 # Index of the max level operator.
 
@@ -143,16 +145,31 @@ def solve_simple_equation(equation):
                 equation[index - 1:index + 2]) # Solve an equation with two
             # operands.
 
-            # Format the list.
+            # Edit the list to fit the result in it.
             equation.pop(index) # Erase the operator.
             equation.pop(index) # Erase the second operand.
             equation[index - 1] = result # Replace the first operand with the
             # result.
-    else: # Operator with one operand.
-        result = solve_one_operand(equation[index - 1:index + 1]) # Solve an
-        # equation with one operand.
+    elif operator in one_operand_after: # Operator with one operand that comes
+        # after it.
+        result = solve_one_operand_after(equation[index - 1:index + 1]) # Solve
+        # an equation with one operand after.
+
+        # Edit the list to fit the result in it.
         equation.pop(index) # Erase the operator
         equation[index - 1] = result # Replace the operand with the result.
+    elif operator in one_operand_before: # Operator with one operand that comes
+        # before it.
+        result = solve_one_operand_before(equation[index:index + 2]) # Solve
+        # an equation with one operand after.
+
+        # Edit the list to fit the result in it.
+        equation.pop(index)  # Erase the operator
+        # tilda() function can return None so I handle it here.
+        if result is not None:
+            equation[index] = result  # Replace the operand with the result.
+        else:
+            equation.pop(index)  # Erase the second operator
 
     return solve_simple_equation(equation)
 
@@ -177,7 +194,7 @@ def solve_two_operand(equation):
     elif operator == '/':
         return operand1 / operand2
     elif operator == '^':
-        return pow(operand1, operand2)
+        return operand1 ** operand2
     elif operator == '%':
         return  operand1 % operand2
     elif operator == '@':
@@ -190,23 +207,51 @@ def solve_two_operand(equation):
     return 0 # Just for emergency.
 
 
-def solve_one_operand(equation):
+def solve_one_operand_after(equation):
     """
-        :param equation: list
-        :return: a floating point number that is the result of an
-        equation with one operand and one operator where the operator is
-        after the operand.
+    :param equation: list
+    :return: a floating point number that is the result of an
+    equation with one operand and one operator where the operator is
+    after the operand.
     """
     operand = equation[0] # Always in the first place.
     operator = equation[1] # Always in the second place.
 
     # Check which type of operator we got and solve it accordingly.
     if operator == '!':
-        return factorial(int(operand))
-    if operator == '~':
-        return -operand
+        return factorial(operand)
 
     return 0 # Just for emergency.
+
+
+def solve_one_operand_before(equation):
+    """
+    :param equation: list
+    :return: a floating point number that is the result of an
+    equation with one operand and one operator where the operator is
+    before the operand.
+    """
+
+    operator = equation[0]  # Always in the first place.
+    operand = equation[1]  # Always in the second place.
+
+    if operator == '~':
+        return tilda(operand)
+
+    return 0 # Just for emergency.
+
+
+def tilda(operand):
+    """
+    :param operand: string or float
+    :return: None if the operand is a string and -operand if it's a
+    float.
+    """
+
+    if operand == '-':
+        return None
+    else:
+        return -operand
 
 
 def factorial(x):
@@ -214,9 +259,15 @@ def factorial(x):
     :param x: int
     :return: factorial of x.
     """
+
+    if x < 0:
+        raise Exception("Can't factorialize numbers below 0.")
+    elif not x.is_integer():
+        raise  Exception("Can only factorialize whole numbers.")
+
     factorial_result = 1
-    while x > 0:
-        factorial_result *= x
+    while int(x) > 0:
+        factorial_result *= int(x)
         x = x - 1
 
     return factorial_result

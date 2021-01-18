@@ -1,14 +1,13 @@
-import EquationSolver
-import InputValidator
-import InputFormatter
+import equation_solver
+import input_validator
+import input_formatter
 
 
 def main():
-    list = InputFormatter.string_to_list(
-       "(-(700%64)!~)")
-    InputFormatter.fix_minuses(list)
+    list = input_formatter.string_to_list("24%12^2-7*9&(2+3-4+6$22--8--~((9+8)!))")
+    input_formatter.fix_minuses(list)
     print(list)
-    result = EquationSolver.calculate(list)
+    result = equation_solver.calculate(list)
     print(result)
 
 
