@@ -7,8 +7,8 @@ def test_check_operators():
     """
 
     # Setup
-    valid_str = "(5+-6!)+-5"
-    invalid_str = "!(---5-+-6!)+-5"
+    valid_str = "(5+~~~~-~~6!)+-5"
+    invalid_str = "(-~~~-+-5-6!)+-5~"
 
     # Test
     result_of_valid_test = check_operators(valid_str)
@@ -40,6 +40,25 @@ def test_check_parentheses():
     assert result_of_too_many_closing_test < 0
 
 
+def test_check_unnecessary_parentheses():
+    """
+    Test the check_unnecessary_parentheses() function.
+    """
+
+    # Setup
+    valid_str = "(5+-6!)+-5"
+    unnecessary_str = "!((-~--5-6!))+-5"
+
+    # Test
+    result_of_valid_test = check_unnecessary_parentheses(valid_str)
+    result_of_unnecessary_test = check_unnecessary_parentheses(
+        unnecessary_str)
+
+    # Assert
+    assert result_of_valid_test == True
+    assert result_of_unnecessary_test == False
+
+
 def test_check_legal_chars():
     """
     Test the check_legal_chars() function.
@@ -65,7 +84,7 @@ def test_check_numbers():
 
     # Setup
     valid_str = "(5+-6!)+-5"
-    invalid_decimal_str = "(5.+-6!)+-5"
+    invalid_decimal_str = "(5+-6!)+-5."
     invalid_two_decimal_str = "(5+-6.7.7!)+-5"
 
     # Test

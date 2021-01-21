@@ -1,8 +1,7 @@
+import operators as o
+
 # Legal operands
 legal_operands = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'}
-# Legal operators
-legal_operators = {'+', '-', '*', '/', '^', '~', '%', '!', '@', '$',
-                   '&', '(', ')'}
 # Legal whitespaces
 legal_white_spaces = {' ', '\t', '\n'}
 
@@ -39,10 +38,10 @@ def check_legal_chars(str):
     :param str: string
     :return: True if all the chars in the string are legal, False if not.
     """
-    global legal_operators, legal_operands, legal_white_spaces
+    global legal_operands, legal_white_spaces
 
     for i in str: # Go over the string
-        if i not in legal_operands and i not in legal_operators \
+        if i not in legal_operands and i not in o.legal_operators \
             and i not in legal_white_spaces: # If a char is not legal.
            return False
 
@@ -58,10 +57,10 @@ def check_parentheses(str):
     """
 
     parentheses_count = 0
-    for i in str: # Go over the string.
-        if i == '(':
+    for parentheses_iterator in str: # Go over the string.
+        if parentheses_iterator == '(':
             parentheses_count = parentheses_count + 1
-        elif i == ')':
+        elif parentheses_iterator == ')':
             parentheses_count = parentheses_count - 1
 
     return parentheses_count
@@ -74,9 +73,31 @@ def check_unnecessary_parentheses(str):
     are.
     """
 
-    # TODO: implement this method.
+    str_copy = str # Copy of the string to not break the original.
+
+    parentheses_iterator = 0
+    while parentheses_iterator < len(str_copy):  # Find all the parentheses.
+
+        if str_copy[parentheses_iterator] == '(':  # If found an open
+            # parentheses.
+            start_index = parentheses_iterator  # Index of the first
+            # parentheses.
+        elif str_copy[parentheses_iterator] == ')': # Found most inside
+            # parentheses.
+            if start_index == parentheses_iterator - 1: # If the opening
+                # parentheses is right next to the closing one.
+                return False
+
+            # Delete the parentheses and what's in it.
+            str_copy = str_copy[0:start_index] + \
+                       str_copy[parentheses_iterator + 1:len(str_copy)]
+            parentheses_iterator = -1 # Check again from the start
+
+        parentheses_iterator = parentheses_iterator + 1  # Skip all the
+        # elements that are not open parentheses.
 
     return True
+
 
 
 def check_operators(str):
@@ -87,34 +108,85 @@ def check_operators(str):
     Also prints out a message if an operator is not used correctly.
     """
 
-    # Operators with two operands with no minus.
-    two_operands_no_minus = {'+', '*', '/', '^', '%', '@', '$', '&'}
-    # Operators with one operand.
-    one_operand = {'!', '~'}
-
-    for i in range(len(str)): # Go over the string
-        if str[i] in two_operands_no_minus: # If operator found is with two
-            # operands.
-            if not str[i - 1].isdigit() and str[i - 1] != ')':
-                # If the place before the operator is not a digit or it's
-                # not a closing parentheses.
-                print("There is no number before the operator:", str[i])
-                return False
-            elif not str[i + 1].isdigit() and str[i + 1] != '-': # If the place
-                # after the operator is not a digit oe a minus
-                if str[i + 1] != '(': # If the place after the operator is
-                    # not an opening parentheses.
-                    print("There is no number after the operator:", str[i])
+    for string_iterator in range(len(str)): # Go over the string
+        if str[string_iterator] in o.two_operands_no_minus: # If operator
+            # found is with two operands.
+            if string_iterator > 0:
+                if not str[string_iterator - 1].isdigit() and \
+                        str[string_iterator - 1] != ')':
+                    # If the place before the operator is not a digit or it's
+                    # not a closing parentheses.
+                    print("There is no number before the operator:",
+                          str[string_iterator])
                     return False
-        elif str[i] in one_operand: # If operator found is with one operand.
-            if not str[i - 1].isdigit() and str[i - 1] != ')': # If the place
-                # before the operator is not a digit or it's not a closing
-                # parentheses.
-                print("There is no number before the operator:", str[i])
+            else:
+                print("There is no number before the operator:",
+                      str[string_iterator])
                 return False
-            elif str[i + 1].isdigit() and str[i + 1] == '(': # If the place
-                # after the operator is a digit or an opening parentheses.
-                print("There is no operator after the operator:", str[i])
+            if string_iterator < len(str) - 1:
+                if not str[string_iterator + 1].isdigit() and \
+                        str[string_iterator + 1] != '-' and \
+                        str[string_iterator + 1] != '~':  # If the place
+                    # after the operator is not a digit oe a minus
+                    if str[
+                        string_iterator + 1] != '(':  # If the place after the
+                        # operator is not an opening parentheses.
+                        print("There is no number after the operator:",
+                              str[string_iterator])
+                        return False
+            else:
+                print("There is no number after the operator:",
+                      str[string_iterator])
+                return False
+        elif str[string_iterator] in o.one_operand_after: # If operator found
+            # is with one operand that come after it.
+            if string_iterator > 0:
+                if not str[string_iterator - 1].isdigit() and \
+                        str[string_iterator - 1] != ')':  # If the place
+                    # before the operator is not a digit or it's not a closing
+                    # parentheses.
+                    print("There is no number before the operator:",
+                          str[string_iterator])
+                    return False
+            else:
+                print("There is no number before the operator:",
+                      str[string_iterator])
+                return False
+
+            if string_iterator < len(str) - 1:
+                if string_iterator < len(str) - 1:
+                    if str[string_iterator + 1].isdigit() and \
+                            str[string_iterator + 1] == '(':  # If the place
+                        # after the operator is a digit or an opening
+                        # parentheses.
+                        print("There is no operator after the operator:",
+                              str[string_iterator])
+                        return False
+        elif str[string_iterator] in o.one_operand_before: # If operator found
+            # is with one operand that come before it.
+            if string_iterator > 0:
+                if str[string_iterator - 1].isdigit() and \
+                        str[string_iterator - 1] == ')': # If the place
+                    # before the operator is not a digit or it's not a closing
+                    # parentheses.
+                    print("There is no operator before the operator:",
+                        str[string_iterator])
+                    return False
+
+            if string_iterator < len(str) - 1:
+                if not str[string_iterator + 1].isdigit() and \
+                        not str[string_iterator + 1] == '(':  # If
+                    # the place after the operator is a digit or an opening
+                    # parentheses.
+                    if str[string_iterator] != '~':  # Exclusions.
+                        print(
+                            "There is no number or minus after the operator:",
+                            str[string_iterator])
+                        return False
+            else:
+                print(
+                    "There is no number or minus after the operator:",
+                    str[string_iterator])
                 return False
 
     return True
@@ -124,35 +196,52 @@ def check_numbers(str):
     """
     :param str: string
     :return: True if the numbers don't have two decimal points or if the
-    decimal points are used correctly and False otherwise.
+    decimal points are used correctly and False otherwise and if the number
+    has an operator where it needs to be.
     """
 
-    i = 0
-    while i < len(str):
-        if str[i] in legal_operands: # Start of a number.
-            start_index = i # Start index of the number.
+    string_iterator = 0
+    while string_iterator < len(str):
+        if str[string_iterator] in legal_operands: # Start of a number.
+            start_index = string_iterator # Start index of the number.
             decimal_flag = False # Flag if found a decimal point in a number.
-            while i < len(str): # Find the end index of the number.
-                if str[i].isdigit(): # Skip on the digits.
-                    i = i + 1
-                elif str[i] == '.': # If found a decimal point.
+            while string_iterator < len(str): # Find the end index of the
+                # number.
+                if str[string_iterator].isdigit(): # Skip on the digits.
+                    string_iterator += 1
+                elif str[string_iterator] == '.': # If found a decimal point.
                     if not decimal_flag: # If not found one already.
                         decimal_flag = True
                     else: # If found one in this number already.
                         print("There are two decimal points for one number.")
                         return False
 
-                    if not str[i - 1].isdigit() or not str[i + 1].isdigit():
-                        # If the decimal point doen't have a digit before or
-                        # after it.
+                    if string_iterator < len(str) - 1:
+                        if not str[string_iterator + 1].isdigit():
+                            # If the decimal point doen't have a digit before
+                            # or after it.
+                            print("Decimal point not used correctly. "
+                                "Missing digits after it.")
+                            return False
+                    else:
                         print("Decimal point not used correctly. "
-                              "Missing digits.")
+                              "Missing digits after it.")
                         return False
 
-                    i = i + 1
+                    if string_iterator > 0:
+                        if not str[string_iterator - 1].isdigit():
+                            print("Decimal point not used correctly. "
+                                  "Missing digits before it.")
+                            return False
+                    else:
+                        print("Decimal point not used correctly. "
+                              "Missing digits before it.")
+                        return False
+
+                    string_iterator += 1
                 else: # End of number
                     break
 
-        i = i + 1
+        string_iterator += 1
 
     return True
