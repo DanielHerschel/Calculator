@@ -1,4 +1,29 @@
 from input_validator import *
+from input_formatter import *
+
+
+def test_syntax():
+    """
+    Test the check_legal_chars() function.
+    """
+
+    # Setup
+    valid_str = "(5+-6!)+-5"
+    invalid_strings = ["(---s5-+f..dfasdf-6!)+-5",
+                       "dsl;kajf940hhasd;ljfnas",
+                       "",
+                       "2*^3",
+                       "        \t\n ",
+                       "-2~"]
+
+    # Test
+    result_of_valid_test = validate_string(valid_str)
+    results_of_invalid_test = [validate_string(str) for str in invalid_strings]
+
+    # Assert
+    assert result_of_valid_test == True
+    for invalid_result in results_of_invalid_test:
+        assert invalid_result == False
 
 
 def test_check_operators():
@@ -57,24 +82,6 @@ def test_check_unnecessary_parentheses():
     # Assert
     assert result_of_valid_test == True
     assert result_of_unnecessary_test == False
-
-
-def test_check_legal_chars():
-    """
-    Test the check_legal_chars() function.
-    """
-
-    # Setup
-    valid_str = "(5+-6!)+-5"
-    invalid_str = "(---s5-+f..dfasdf-6!)+-5"
-
-    # Test
-    result_of_valid_test = check_operators(valid_str)
-    result_of_invalid_test = check_operators(invalid_str)
-
-    # Assert
-    assert result_of_valid_test == True
-    assert result_of_invalid_test == False
 
 
 def test_check_numbers():

@@ -40,19 +40,20 @@ def string_to_list(str):
         # If found a number, find the end of it and add it to the list.
         if str[string_iterator] in legal_operands:
             start_index = string_iterator # Start index of the number.
-            while string_iterator < len(str): # Find the end index of the number.
+            while string_iterator < len(str): # Find the end index of the
+                # number.
                 if str[string_iterator] in legal_operands:
                     string_iterator = string_iterator + 1
                 else:
                     break
-            op_list.append(float(str[start_index:string_iterator])) # Append to the list the
-            # number that has been found.
+            op_list.append(float(str[start_index:string_iterator])) # Append to
+            # the list the number that has been found.
 
         # Insert the operators to the list.
         if string_iterator < len(str):
             while string_iterator < len(str):
-                if str[string_iterator] in o.legal_operators: # If found a legal operator,
-                    # add it to the list.
+                if str[string_iterator] in o.legal_operators: # If found a
+                    # legal operator, add it to the list.
                     op_list.append(str[string_iterator])
                     string_iterator = string_iterator + 1
                 else:

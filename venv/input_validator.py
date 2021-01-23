@@ -2,8 +2,6 @@ import operators as o
 
 # Legal operands
 legal_operands = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'}
-# Legal whitespaces
-legal_white_spaces = {' ', '\t', '\n'}
 
 
 def validate_string(str):
@@ -13,7 +11,10 @@ def validate_string(str):
     Prints out a message if found an error in the string.
     """
 
-    if not check_legal_chars(str):
+    if len(str) == 0:
+        print("Can't solve an empty equation.")
+        return False
+    elif not check_legal_chars(str):
         print("Illegal characters are used.")
         return False
     elif check_parentheses(str) > 0:
@@ -37,12 +38,14 @@ def check_legal_chars(str):
     """
     :param str: string
     :return: True if all the chars in the string are legal, False if not.
+    I don't check for whitespaces because they are deleted before the
+    validation.
     """
-    global legal_operands, legal_white_spaces
+    global legal_operands
 
     for i in str: # Go over the string
-        if i not in legal_operands and i not in o.legal_operators \
-            and i not in legal_white_spaces: # If a char is not legal.
+        if i not in legal_operands and i not in o.legal_operators: # If a char
+            # is not legal.
            return False
 
     return True
@@ -165,7 +168,7 @@ def check_operators(str):
         elif str[string_iterator] in o.one_operand_before: # If operator found
             # is with one operand that come before it.
             if string_iterator > 0:
-                if str[string_iterator - 1].isdigit() and \
+                if str[string_iterator - 1].isdigit() or \
                         str[string_iterator - 1] == ')': # If the place
                     # before the operator is not a digit or it's not a closing
                     # parentheses.
@@ -207,7 +210,17 @@ def check_numbers(str):
             decimal_flag = False # Flag if found a decimal point in a number.
             while string_iterator < len(str): # Find the end index of the
                 # number.
-                if str[string_iterator].isdigit(): # Skip on the digits.
+                if str[string_iterator].isdigit(): # If found a digit.
+                    if string_iterator > 0:
+                        if str[string_iterator - 1] == ')':
+                            print("There is no operator between the number and"
+                                  " closing parentheses.")
+                            return False
+                    elif string_iterator < len(str) - 1:
+                        if str[string_iterator + 1] == '(':
+                            print("There is no operator between the number and"
+                                  " the opening parentheses.")
+                            return False
                     string_iterator += 1
                 elif str[string_iterator] == '.': # If found a decimal point.
                     if not decimal_flag: # If not found one already.
