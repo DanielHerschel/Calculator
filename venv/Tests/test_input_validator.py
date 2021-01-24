@@ -1,5 +1,5 @@
-from input_validator import *
-from input_formatter import *
+from ..input_validator import *
+from ..input_formatter import *
 
 
 def test_syntax():

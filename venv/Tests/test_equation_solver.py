@@ -1,6 +1,7 @@
-from equation_solver import *
-from input_formatter import string_to_list, delete_whitespaces, fix_operators
-import exceptions
+from ..equation_solver import *
+from ..input_formatter import string_to_list, delete_whitespaces, fix_operators
+from .. import exceptions as ex
+import os, sys # ONLY FOR OPENING THE 3+3... FILE
 
 
 def test_easy_equations():
@@ -78,7 +79,10 @@ def test_stack_overflow():
     """
 
     # Setup
-    with open("three_plus_three_stack_overflow") as threes_file:
+    _location__ = os.path.realpath(
+        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    with open(os.path.join(_location__, "three_plus_three_stack_overflow"))\
+            as threes_file:
         equation_str = threes_file.read().replace('\n', '')
     equation = string_to_list(equation_str)
 
@@ -129,7 +133,7 @@ def test_negative_factorial():
     negative_factorial_flag = False
     try:
         answer = calculate(equation)
-    except Exception as e:
+    except ex.NegativeFactorialError as e:
         print(e)
         negative_factorial_flag = True
 
@@ -151,7 +155,7 @@ def test_decimal_factorial():
     decimal_factorial_flag = False
     try:
         answer = calculate(equation)
-    except Exception as e:
+    except ex.DecimalFactorialError as e:
         print(e)
         decimal_factorial_flag = True
 

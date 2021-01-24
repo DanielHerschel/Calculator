@@ -1,4 +1,4 @@
-from input_formatter import *
+from ..input_formatter import *
 
 
 def test_delete_whitespaces():

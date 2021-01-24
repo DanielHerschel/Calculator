@@ -1,5 +1,9 @@
-import operators as o
-import exceptions as ex
+try:
+    from . import operators as o
+    from . import exceptions as ex
+except:
+    import operators as o
+    import exceptions as ex
 
 def calculate(equation):
     """

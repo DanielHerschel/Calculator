@@ -1,4 +1,7 @@
-import operators as o
+try:
+    from . import operators as o
+except:
+    import operators as o
 
 # Legal operands
 legal_operands = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'}
