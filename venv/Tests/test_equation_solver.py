@@ -1,5 +1,6 @@
 from equation_solver import *
 from input_formatter import string_to_list, delete_whitespaces, fix_operators
+import exceptions
 
 
 def test_easy_equations():

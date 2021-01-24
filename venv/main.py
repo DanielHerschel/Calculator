@@ -11,6 +11,7 @@
 import equation_solver
 import input_validator
 import input_formatter
+import exceptions as ex
 
 
 def main():
@@ -65,8 +66,22 @@ def main():
                             result = equation_solver.calculate(equation)
                             print(result)
                         except RecursionError as re: # If crashed
-                            # because or max depth recursion.
+                            # because of max depth recursion.
                             print(re)
+                        except ex.ComplexNumberError as cne: # If
+                            # crashed because of complex number.
+                            print(cne)
+                        except ex.InfiniteNumberError as ine: # If
+                            # crashed because of infinite number.
+                            print(ine)
+                        except ex.NegativeFactorialError as nfe: # If
+                            # crashed because of negative
+                            # factorialization.
+                            print(nfe)
+                        except ex.DecimalFactorialError as dfe: # If
+                            # crashed because of decimal
+                            # factorialization.
+                            print(dfe)
                         except Exception as e:
                             print(e)
                     else: # If handled the string unsuccessfully.

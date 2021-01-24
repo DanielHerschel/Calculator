@@ -1,5 +1,5 @@
 import operators as o
-import math
+import exceptions as ex
 
 def calculate(equation):
     """
@@ -44,11 +44,9 @@ def calculate(equation):
 
             # Check if the result is an illegal number.
             if isinstance(result, complex):
-                raise Exception("Can't use complex numbers.")
+                raise ex.ComplexNumberError()
             elif result == float('inf') or result == float('-inf'):
-                raise Exception("Can't use infinite numbers.")
-            elif math.isnan(result):
-                raise Exception("Can't use NaN.")
+                raise ex.InfiniteNumberError()
 
             # Pop all the elements of the equation we solved
             # (until the closing parentheses).
@@ -69,11 +67,9 @@ def calculate(equation):
 
     # Check if the result is an illegal number.
     if isinstance(result, complex):
-        raise Exception("Can't use complex numbers.")
-    elif math.isinf(result):
-        raise Exception("Can't use infinite numbers.")
-    elif math.isnan(result):
-        raise Exception("Can't use NaN.")
+        raise ex.ComplexNumberError()
+    elif result == float('inf') or result == float('-inf'):
+        raise ex.InfiniteNumberError()
 
     return result
 
@@ -288,9 +284,9 @@ def _factorial(x):
     """
 
     if x < 0:
-        raise Exception("Can't factorialize numbers below 0.")
+        raise ex.NegativeFactorialError()
     elif not float(x).is_integer():
-        raise  Exception("Can't factorialize decimal numbers'.")
+        raise ex.DecimalFactorialError()
 
     factorial_result = 1
     while int(x) > 0:

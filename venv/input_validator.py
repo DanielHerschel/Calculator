@@ -118,7 +118,8 @@ def check_operators(str):
             # operator found is with two operands.
             if string_iterator > 0:
                 if not str[string_iterator - 1].isdigit() and \
-                        str[string_iterator - 1] != ')':
+                        str[string_iterator - 1] != ')' and \
+                        str[string_iterator - 1] not in o.one_operand_after:
                     # If the place before the operator is not a digit or
                     # it's not a closing parentheses.
                     print("There is no number before the operator:",
