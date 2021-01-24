@@ -38,15 +38,15 @@ def main():
         print("Enter an equation (X to exit): ")
         user_input = get_input_from_user() # Get input from the user.
         if user_input is not None: # If the input is not None.
-            if user_input.lower() == 'x': # If the input is 'x' then close the
-                # program.
+            if user_input.lower() == 'x': # If the input is 'x' then
+                # close the program.
                 break
 
             deleted_whitespaces = input_formatter.delete_whitespaces(
                 user_input) # Delete the whitespaces of the string.
 
-            if deleted_whitespaces is not None: # If removed the whitepaces
-                # successfully.
+            if deleted_whitespaces is not None: # If removed the
+                # whitepaces successfully.
                 validate_flag = False # Validation flag.
                 try:
                     validate_flag = input_validator.validate_string(
@@ -58,14 +58,14 @@ def main():
                 if validate_flag: # If the string is valid.
                     equation = handle_input_from_user(deleted_whitespaces)
                     # Handle the string to make it an equation.
-                    if equation is not None: # If successfully handled the
-                        # string.
+                    if equation is not None: # If successfully handled
+                        # the string.
                         try:
-                            result = equation_solver.calculate(equation) # Try
-                            # to calculate the equation.
+                            # Try to calculate the equation.
+                            result = equation_solver.calculate(equation)
                             print(result)
-                        except RecursionError as re: # If crashed because or
-                            x# max depth recursion.
+                        except RecursionError as re: # If crashed
+                            # because or max depth recursion.
                             print(re)
                         except Exception as e:
                             print(e)
@@ -85,8 +85,8 @@ def main():
 
 def get_input_from_user():
     """
-    :return: a string that was inputted from the useror None if could not get
-    an input from the user.
+    :return: a string that was inputted from the useror None if could
+    not get an input from the user.
     """
     try:
         user_input = str(input())

@@ -93,10 +93,12 @@ def test_fix_operators_3():
     """
 
     # Setup
-    # Test when there is a minus sequence next to an opening parentheses.
+    # Test when there is a minus sequence next to an opening
+    # parentheses.
     open_parentheses_odd_minus = string_to_list("(---5+6)/2")
     open_parentheses_even_minus = string_to_list("(--5+6)/2")
-    # Test when there is a minus sequence next to an closing parentheses.
+    # Test when there is a minus sequence next to an closing
+    # parentheses.
     close_parentheses_odd_minus = string_to_list("(5+6)---2")
     close_parentheses_even_minus = string_to_list("(5+6)--2")
 

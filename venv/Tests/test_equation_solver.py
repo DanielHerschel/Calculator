@@ -116,7 +116,8 @@ def test_divide_by_zero():
 
 def test_negative_factorial():
     """
-    Test the calculate() function for factorialization of negative numbers.
+    Test the calculate() function for factorialization of negative
+    numbers.
     """
 
     # Setup
@@ -137,7 +138,8 @@ def test_negative_factorial():
 
 def test_decimal_factorial():
     """
-    Test the calculate() function for factorialization of negative numbers.
+    Test the calculate() function for factorialization of negative
+    numbers.
     """
 
     # Setup

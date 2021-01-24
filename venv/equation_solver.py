@@ -20,8 +20,8 @@ def calculate(equation):
     """
 
     parentheses_iterator = 0
-    while parentheses_iterator < len(equation): # Find all the parentheses.
-
+    while parentheses_iterator < len(equation): # Find all the
+        # parentheses.
         if equation[parentheses_iterator] == '(': # If found an open
             # parentheses.
             start_index = parentheses_iterator + 1 # Index of the first
@@ -31,20 +31,21 @@ def calculate(equation):
             while count != 0: # Find the closing parentheses
                 # of the open parentheses.
                 parentheses_iterator = parentheses_iterator + 1
-                if equation[parentheses_iterator] == '(': # Increase count by 1
-                    # if found open parentheses.
+                if equation[parentheses_iterator] == '(': # Increase
+                    # count by 1 if found open parentheses.
                     count = count + 1
-                elif equation[parentheses_iterator] == ')': # Decrease count by
-                    # 1 if found closing parentheses.
+                elif equation[parentheses_iterator] == ')': # Decrease
+                    # count by 1 if found closing parentheses.
                     count = count - 1
 
-            # Run this function for the equation found in the parentheses.
+            # Run this function for the equation found in the
+            # parentheses.
             result = calculate(equation[start_index: parentheses_iterator])
 
             # Check if the result is an illegal number.
             if isinstance(result, complex):
                 raise Exception("Can't use complex numbers.")
-            elif math.isinf(result):
+            elif result == float('inf') or result == float('-inf'):
                 raise Exception("Can't use infinite numbers.")
             elif math.isnan(result):
                 raise Exception("Can't use NaN.")
@@ -53,18 +54,18 @@ def calculate(equation):
             # (until the closing parentheses).
             for j in range(parentheses_iterator - start_index + 1):
                 equation.pop(start_index)
-            equation[start_index - 1] = result # Replace the element that's
-            # before start_index with the result (will always be
+            equation[start_index - 1] = result # Replace the element
+            # that's before start_index with the result (will always be
             # the opening parentheses).
-            parentheses_iterator = -1 # Assign -1 to i to start over the search
-            # for parentheses (I assign -1 because I add 1 to the iterator
-            # right after that).
+            parentheses_iterator = -1 # Assign -1 to i to start over the
+            # search for parentheses (I assign -1 because I add 1 to the
+            # iterator right after that).
 
-        parentheses_iterator = parentheses_iterator + 1 # Skip all the elements
-        # that are not open parentheses.
+        parentheses_iterator = parentheses_iterator + 1 # Skip all the
+        # elements that are not open parentheses.
 
-    result = _solve_simple_equation(equation) # If not found any parentheses
-    # in the equation, run _solve_simple_equation.
+    result = _solve_simple_equation(equation) # If not found any
+    # parentheses in the equation, run _solve_simple_equation.
 
     # Check if the result is an illegal number.
     if isinstance(result, complex):
@@ -87,23 +88,28 @@ def _solve_simple_equation(equation):
     # TODO: solve the simple equation given in the equation list.
     #  Solve via the rules of the levels of the operands.
 
-    if len(equation) == 1: # Stop condition. When there is only 1 operand left.
+    if len(equation) == 1: # Stop condition. When there is only 1
+        # operand left.
         return equation[0]
 
     max_level_operator = '' # Operator with max level in the equation.
     max_level_operator_index = 0 # Index of the max level operator.
 
-    for equation_iterator in range(len(equation)): # Go over the equation.
-        if isinstance(equation[equation_iterator], str): # If it's a string
-            if max_level_operator == '': # Check if not found an operator yet.
+    for equation_iterator in range(len(equation)): # Go over the
+        # equation.
+        if isinstance(equation[equation_iterator], str): # If it's a
+            # string.
+            if max_level_operator == '': # Check if not found an
+                # operator yet.
+
                 # Assign the operator.
                 max_level_operator = equation[equation_iterator]
                 # Assign the index of the operator.
                 max_level_operator_index = equation_iterator
             elif o.operator_dic[equation[equation_iterator]] > \
                     o.operator_dic[max_level_operator]:
-                # If found an operator already, check if the current one has
-                # a higher level.
+                # If found an operator already, check if the current one
+                # has a higher level.
 
                 # Assign the max level operator.
                 max_level_operator = equation[equation_iterator]
@@ -133,29 +139,32 @@ def _solve_simple_equation(equation):
         # Edit the list to fit the result in it.
         equation.pop(index) # Erase the operator.
         equation.pop(index) # Erase the second operand.
-        equation[index - 1] = result # Replace the first operand with the
-        # result.
-    elif operator in o.one_operand_after: # Operator with one operand that
-        # comes after it.
+        equation[index - 1] = result # Replace the first operand with
+        # the result.
+    elif operator in o.one_operand_after: # Operator with one operand
+        # that comes after it.
 
         # Solve an equation with one operand after.
         result = _solve_one_operand_after(equation[index - 1:index + 1])
 
         # Edit the list to fit the result in it.
         equation.pop(index) # Erase the operator
-        equation[index - 1] = result # Replace the operand with the result.
-    elif operator in o.one_operand_before: # Operator with one operand that
-        # comes before it.
-        result = _solve_one_operand_before(equation[index:index + 2]) # Solve
-        # an equation with one operand after.
+        equation[index - 1] = result # Replace the operand with the
+        # result.
+    elif operator in o.one_operand_before: # Operator with one operand
+        # that comes before it.
+
+        # Solve an equation with one operand after.
+        result = _solve_one_operand_before(equation[index:index + 2])
 
         # Edit the list to fit the result in it.
         equation.pop(index)  # Erase the operator
         # tilda() function can return None so I handle it here.
         if result is not None:
-            equation[index] = result  # Replace the operand with the result.
+            equation[index] = result  # Replace the operand with the
+            # result.
         else:
-            equation.pop(index)  # Erase the second operator
+            equation.pop(index)  # Erase the second operator.
 
     return _solve_simple_equation(equation)
 
@@ -166,7 +175,8 @@ def _handle_edge_cases_two_operands(operator, index, equation):
     :param operator: string
     :param index: int
     :param equation: list
-    :return: a number of False if not done anything or True if done anything.
+    :return: a number of False if not done anything or True if done
+    anything.
     """
     # Handle minuses
     if operator == '-' and index == 0 and len(equation) == 2:
@@ -191,8 +201,8 @@ def _solve_two_operand(equation):
     :param equation: list
     :return: a floating point number that is the result of an
     equation with two operands and one operator.
-    :exception: ZeroDivisionError if operand2 is zero and the operator is
-    division.
+    :exception: ZeroDivisionError if operand2 is zero and the operator
+    is division.
     """
     operand1 = equation[0] # Always in the first place.
     operand2 = equation[2] # Always in the third place.
@@ -279,7 +289,7 @@ def _factorial(x):
 
     if x < 0:
         raise Exception("Can't factorialize numbers below 0.")
-    elif not x.is_integer():
+    elif not float(x).is_integer():
         raise  Exception("Can't factorialize decimal numbers'.")
 
     factorial_result = 1
